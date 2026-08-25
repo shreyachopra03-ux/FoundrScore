@@ -13,4 +13,4 @@ export function parseAndValidate (raw: string): AnalyzeResponse {
     const cleaned = cleanRawText(raw);
     const parsed = JSON.parse(cleaned);
     return AnalyzeResponseSchema.parse(parsed);
-}
+};
