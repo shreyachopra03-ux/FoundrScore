@@ -8,7 +8,7 @@ import { env } from "../config/env.js";
 const geminiClient = new GoogleGenerativeAI(env.GEMINI_API_KEY);
 const groqClient = new Groq({ apiKey: env.GROQ_API_KEY });
 
-async function geminiResponse(input: AnalyzeRequest): Promise<string> {
+async function geminiResponse (input: AnalyzeRequest): Promise<string> {
     const model = geminiClient.getGenerativeModel({
         model : "gemini-2.5-flash",
         systemInstruction: SYSTEM_PROMPT,
@@ -41,7 +41,6 @@ async function groqResponse (input: AnalyzeRequest): Promise<string> {
     if (!responseText) {
         throw new Error("Groq returned an empty response.");
     }
-
     return responseText;
 };
 
@@ -73,7 +72,6 @@ async function openRouterResponse (input: AnalyzeRequest): Promise<string> {
     if (!responseText) {
         throw new Error("OpenRouter returned an empty response.");
     }
-
     return responseText;
 };
 
@@ -84,7 +82,7 @@ export async function analyzeIdea (input: AnalyzeRequest): Promise<AnalyzeResult
     try {
         rawText = await geminiResponse(input);
         modelUsed = "gemini-2.5-flash";
-    } catch (geminiError) {
+        } catch (geminiError) {
         console.error("Gemini failed:", geminiError);
 
        try {
@@ -101,7 +99,7 @@ export async function analyzeIdea (input: AnalyzeRequest): Promise<AnalyzeResult
             throw new Error("All LLM providers failed. Please try again in a minute.");
         }
        } 
-    }
+    };
 
     const validated = parseAndValidate(rawText);
  
