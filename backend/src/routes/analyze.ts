@@ -2,9 +2,9 @@ import express from "express";
 import { analyzeIdea } from "../services/llmRouter.js";
 import { type AnalyzeRequest } from "../types/index.js";
 
-const router = express.Router();
+const analyzeRouter = express.Router();
 
-router.post("/analyze", async (req, res) => {
+analyzeRouter.post("/analyze", async (req, res) => {
     const { idea, budgetINR, industry } = req.body;
 
     if (!idea || typeof idea !== "string" || idea.length < 10 || idea.length > 300) {
@@ -26,5 +26,5 @@ router.post("/analyze", async (req, res) => {
     }
 });
 
-export default router;
+export default analyzeRouter;
 
