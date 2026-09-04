@@ -8,7 +8,7 @@ export const AnalyzeRequestSchema = z.object({
 export type AnalyzeRequest = z.infer<typeof AnalyzeRequestSchema>;
 
 export const AnalyzeResponseSchema = z.object({
-    foundrScore: z.int().min(0).max(100),
+    founderScore: z.int().min(0).max(100),
     scoreBreakdown: z.object({
         marketDemand: z.number().int().min(0).max(100),
         differentiation: z.number().int().min(0).max(100),
@@ -45,7 +45,7 @@ export const AnalyzeResponseSchema = z.object({
 });
 export type AnalyzeResponse = z.infer<typeof AnalyzeResponseSchema>;
 
-export type LLMProvider = "gemini-2.5-flash" | "llama-3.3-70b-versatile" | "openrouter-fallback";
+export type LLMProvider = "gemini-3.6-flash" | "llama-3.1-8b-instant" | "openrouter-fallback";
 
 export interface AnalyzeResult extends AnalyzeResponse {
     modelUsed: LLMProvider;
