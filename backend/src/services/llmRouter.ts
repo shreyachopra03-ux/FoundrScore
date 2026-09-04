@@ -10,7 +10,7 @@ const groqClient = new Groq({ apiKey: env.GROQ_API_KEY });
 
 async function geminiResponse (input: AnalyzeRequest): Promise<string> {
     const model = geminiClient.getGenerativeModel({
-        model : "gemini-2.5-flash",
+        model : "gemini-3.6-flash",
         systemInstruction: SYSTEM_PROMPT,
         generationConfig : {
             responseMimeType: "application/json",
@@ -27,7 +27,7 @@ async function geminiResponse (input: AnalyzeRequest): Promise<string> {
 
 async function groqResponse (input: AnalyzeRequest): Promise<string> {
     const result = await groqClient.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
+        model: "llama-3.1-8b-instant",
         response_format: { type: "json_object" },
         messages: [
             { role: "system", content: SYSTEM_PROMPT }, 
@@ -52,7 +52,7 @@ async function openRouterResponse (input: AnalyzeRequest): Promise<string> {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            model: "meta-llama/llama-3.3-70b-instruct:free",
+            model:"z-ai/glm-5.2:free",
             response_format: { type: "json_object" },
             messages: [
                 { role: "system", content: SYSTEM_PROMPT },
@@ -81,13 +81,13 @@ export async function analyzeIdea (input: AnalyzeRequest): Promise<AnalyzeResult
 
     try {
         rawText = await geminiResponse(input);
-        modelUsed = "gemini-2.5-flash";
+        modelUsed = "gemini-3.6-flash";
         } catch (geminiError) {
         console.error("Gemini failed:", geminiError);
 
        try {
         rawText = await groqResponse(input);
-        modelUsed = "llama-3.3-70b-versatile";
+        modelUsed = "llama-3.1-8b-instant";
        } catch (groqError) {
         console.error("Groq failed:", groqError); 
 

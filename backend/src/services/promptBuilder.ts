@@ -10,7 +10,7 @@ Respond ONLY with valid JSON matching the schema you are given. No prose, no mar
 no text outside the JSON object.`;
 
 export function buildUserPrompt( input: AnalyzeRequest ): string {
-    const { idea, budgetINR, industry } = input 
+    const { idea, budgetINR, industry } = input;
 
     let prompt = `Idea: "${idea}"\nIndustry hint: ${industry ?? "not specified"}\n`;
 
