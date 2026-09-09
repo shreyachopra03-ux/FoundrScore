@@ -5,8 +5,27 @@ import { parseAndValidate } from "../services/responseValidator.js";
 import { type AnalyzeResult, type AnalyzeRequest, type AnalyzeResponse, type LLMProvider } from "../types/index.js";
 import { env } from "../config/env.js";
 
-const geminiClient = new GoogleGenerativeAI(env.GEMINI_API_KEY);
 const groqClient = new Groq({ apiKey: env.GROQ_API_KEY });
+const geminiClient = new GoogleGenerativeAI(env.GEMINI_API_KEY);
+
+async function groqResponse (input: AnalyzeRequest): Promise<string> {
+    const result = await groqClient.chat.completions.create({
+        model: "openai/gpt-oss-20b",
+        response_format: { type: "json_object" },
+        messages: [
+            { role: "system", content: SYSTEM_PROMPT }, 
+            { role: "user", content: buildUserPrompt(input) }
+        ],
+        temperature: 0.35,
+    });
+
+    const responseText = result.choices[0]?.message?.content;
+    
+    if (!responseText) {
+        throw new Error("Groq returned an empty response.");
+    }
+    return responseText;
+};
 
 async function geminiResponse (input: AnalyzeRequest): Promise<string> {
     const model = geminiClient.getGenerativeModel({
@@ -25,34 +44,15 @@ async function geminiResponse (input: AnalyzeRequest): Promise<string> {
     return responseText;
 };
 
-async function groqResponse (input: AnalyzeRequest): Promise<string> {
-    const result = await groqClient.chat.completions.create({
-        model: "llama-3.1-8b-instant",
-        response_format: { type: "json_object" },
-        messages: [
-            { role: "system", content: SYSTEM_PROMPT }, 
-            { role: "user", content: buildUserPrompt(input) }
-        ],
-        temperature: 0.35,
-    });
-
-    const responseText = result.choices[0]?.message?.content;
-    
-    if (!responseText) {
-        throw new Error("Groq returned an empty response.");
-    }
-    return responseText;
-};
-
-async function openRouterResponse (input: AnalyzeRequest): Promise<string> {
+async function nvidiaResponse (input: AnalyzeRequest): Promise<string> {
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
-            Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
+            Authorization: `Bearer ${env.NVIDIA_API_KEY}`,
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            model:"z-ai/glm-5.2:free",
+            model:"meta/llama-3.1-70b-instruct",
             response_format: { type: "json_object" },
             messages: [
                 { role: "system", content: SYSTEM_PROMPT },
@@ -63,14 +63,14 @@ async function openRouterResponse (input: AnalyzeRequest): Promise<string> {
     });
 
     if (!response.ok) {
-        throw new Error(`OpenRouter request failed with status ${response.status}`);
+        throw new Error(`NVIDIA request failed with status ${response.status}`);
     }
 
     const data = await response.json();
     const responseText = data.choices[0]?.message?.content;
 
     if (!responseText) {
-        throw new Error("OpenRouter returned an empty response.");
+        throw new Error("NVIDIA returned an empty response.");
     }
     return responseText;
 };
@@ -80,22 +80,22 @@ export async function analyzeIdea (input: AnalyzeRequest): Promise<AnalyzeResult
     let modelUsed: LLMProvider;
 
     try {
+        rawText = await groqResponse(input);
+        modelUsed = "openai/gpt-oss-20b";
+       } catch (groqError) {
+        console.error("Groq failed:", groqError); 
+
+    try {
         rawText = await geminiResponse(input);
         modelUsed = "gemini-3.6-flash";
         } catch (geminiError) {
         console.error("Gemini failed:", geminiError);
 
-       try {
-        rawText = await groqResponse(input);
-        modelUsed = "llama-3.1-8b-instant";
-       } catch (groqError) {
-        console.error("Groq failed:", groqError); 
-
         try {
-        rawText = await openRouterResponse(input)
-        modelUsed = "openrouter-fallback";
-        } catch (openRouterError) {
-            console.error("OpenRouter failed:", openRouterError);
+        rawText = await nvidiaResponse(input)
+        modelUsed = "meta/llama-3.1-70b-instruct";
+        } catch (nvidiaError) {
+            console.error("OpenRouter failed:", nvidiaError);
             throw new Error("All LLM providers failed. Please try again in a minute.");
         }
        } 
