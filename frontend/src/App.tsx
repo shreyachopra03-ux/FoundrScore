@@ -7,8 +7,8 @@ function App() {
 
   return (
     <>
-      <div className="heading font-extrabold m-0">
-        FoundrScore Project
+      <div className="heading font-extrabold m-0 p-0">
+        FoundrScore
       </div>
       <IdeaInputForm onResult={setResult} />
       {result && <p>{JSON.stringify(result)}</p>}

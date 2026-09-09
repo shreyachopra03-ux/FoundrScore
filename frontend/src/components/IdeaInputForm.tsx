@@ -53,7 +53,7 @@ const IdeaInputForm = ({ onResult }: Props) => {
             />
             </div>
             {error && <p>{error}</p>}
-            <button type="submit" disabled={loading}>
+            <button type="submit" disabled={loading} className="button p-2 m-2 border-2">
                 {loading ? "Analyzing..." : "Submit"}
             </button>
         </form>
