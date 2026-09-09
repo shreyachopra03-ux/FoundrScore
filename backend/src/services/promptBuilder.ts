@@ -33,7 +33,7 @@ export function buildUserPrompt( input: AnalyzeRequest ): string {
     "timing": number (0-100),
     "monetizationClarity": number (0-100)
     },
-    "verdict": "Strong — build it" | "Promising, needs refinement" | "Weak — needs a pivot" | "Oversaturated / declining category",
+    "verdict": "Strong - build it" | "Promising, needs refinement" | "Weak - needs a pivot" | "Oversaturated / declining category",
     "marketTimingAnalysis": string (2-3 sentences),
     "improvements": [ { "issue": string, "fix": string } ] (3 to 5 items, fix under 20 words),
     "competitorLandscape": [string, string, string] (2-3 items),
