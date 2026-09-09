@@ -1,6 +1,7 @@
 import { type AnalyzeResponse } from '../types/index';
 
-const sharedCardGenerator = ({ result }: { result: AnalyzeResponse }) => {
+const SharedCardGenerator = ({ result }: { result: AnalyzeResponse }) => {
+    return (
     <>
     <div>
     <p className="font-extrabold">{result.founderScore}</p>
@@ -8,6 +9,7 @@ const sharedCardGenerator = ({ result }: { result: AnalyzeResponse }) => {
     <p>{result.shareSummary}</p>
     </div>
     </>
+    )
 };
 
-export default sharedCardGenerator;
+export default SharedCardGenerator;

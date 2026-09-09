@@ -4,13 +4,14 @@ import analyzeIdea from "../api/apiClient";
 
 interface Props {
     onResult : (result: AnalyzeResponse) => void;
+    loading: boolean;
+    setLoading: (value: boolean) => void;
 }
 
-const IdeaInputForm = ({ onResult }: Props) => {
+const IdeaInputForm = ({ onResult, loading, setLoading }: Props) => {
     const [idea, setIdea] = useState("");
     const [budgetINR, setBudgetINR] = useState<number | undefined>(undefined);
     const [industry, setIndustry] = useState("");
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
     async function submitHandler (e: React.SubmitEvent<HTMLFormElement>) {
