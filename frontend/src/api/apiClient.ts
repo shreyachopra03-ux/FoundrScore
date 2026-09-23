@@ -1,6 +1,8 @@
 import { type AnalyzeRequest, type AnalyzeResponse } from "../types/index";
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL || "http://localhost:5000/api").replace(/\/+$/, "");
+const RAW_BASE_URL = (import.meta.env.VITE_API_URL || "http://localhost:5000/api").replace(/\/+$/, "");
+// Backend mounts routes under /api; tolerate env values that omit it.
+const API_BASE_URL = RAW_BASE_URL.endsWith("/api") ? RAW_BASE_URL : `${RAW_BASE_URL}/api`;
 
 async function analyzeIdea(input: AnalyzeRequest): Promise<AnalyzeResponse> {
     try {
