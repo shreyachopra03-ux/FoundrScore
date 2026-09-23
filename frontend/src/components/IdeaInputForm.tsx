@@ -49,8 +49,8 @@ const IdeaInputForm = ({ onResult, loading, setLoading }: Props) => {
         try {
             const result = await analyzeIdea(input);
             onResult(result);
-        } catch {
-            setError("Something went wrong, Try again.");
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Something went wrong, Try again.");
          } finally {
             setLoading(false);
         }
