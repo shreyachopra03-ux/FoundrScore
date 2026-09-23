@@ -45,7 +45,7 @@ export const AnalyzeResponseSchema = z.object({
 });
 export type AnalyzeResponse = z.infer<typeof AnalyzeResponseSchema>;
 
-export type LLMProvider = "gemini-3.6-flash" | "llama-3.1-8b-instant" | "openrouter-fallback";
+export type LLMProvider = "openai/gpt-oss-20b" | "gemini-3.6-flash" | "meta/llama-3.1-70b-instruct";
 
 export interface AnalyzeResult extends AnalyzeResponse {
     modelUsed: LLMProvider;
