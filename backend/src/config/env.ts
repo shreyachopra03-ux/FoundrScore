@@ -7,7 +7,7 @@ export const env = {
     GEMINI_API_KEY: process.env.GEMINI_API_KEY || "",
     GROQ_API_KEY: process.env.GROQ_API_KEY || "",
     NVIDIA_API_KEY: process.env.NVIDIA_API_KEY || "",
-    CLIENT_URL: process.env.CLIENT_URL || "http://localhost:5173/",
+    CLIENT_URL: (process.env.CLIENT_URL || "http://localhost:5173").replace(/\/+$/, ""),
 };
 
 if(!env.GEMINI_API_KEY || !env.GROQ_API_KEY || !env.NVIDIA_API_KEY) {

@@ -7,7 +7,7 @@ import { analyzeRateLimiter } from "../src/middleware/rateLimiter.js";
 export const app = express();
 
 app.use(express.json());
-app.use(cors({ origin: env.CLIENT_URL }));
+app.use(cors({ origin: [env.CLIENT_URL, `${env.CLIENT_URL}/`], credentials: true }));
 
 app.use("/api", analyzeRateLimiter, analyzeRouter);
 
