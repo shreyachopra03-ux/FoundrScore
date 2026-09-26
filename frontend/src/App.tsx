@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, MotionConfig } from "framer-motion";
 import { RouterProvider, useRouter } from "./lib/router";
 import Navbar from "./components/Navbar";
 import BackgroundDecor from "./components/BackgroundDecor";
@@ -49,7 +49,8 @@ function AppContent() {
   }, [path]);
 
   return (
-    <div className="relative min-h-screen flex flex-col overflow-x-hidden bg-background text-foreground">
+    <MotionConfig reducedMotion="user">
+    <div className="relative flex min-h-screen flex-col overflow-x-clip text-foreground">
       <BackgroundDecor />
       <Navbar />
 
@@ -93,12 +94,16 @@ function AppContent() {
         </AnimatePresence>
       </main>
 
-      <footer className="w-full border-t border-border/60 py-8 text-center">
-        <p className="font-mono text-xs text-muted-foreground uppercase tracking-wider">
-          FoundrScore &middot; Calibrated for 2026 early-stage venture truth
-        </p>
+      <footer className="w-full border-t border-line">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+          <span className="font-heading text-xl text-ivory">FoundrScore</span>
+          <p className="label-mono text-ivory/45">
+            Calibrated for 2026 early-stage venture truth
+          </p>
+        </div>
       </footer>
     </div>
+    </MotionConfig>
   );
 }
 

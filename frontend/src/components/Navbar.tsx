@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { useRouter } from "../lib/router";
 import { Button } from "./ui/button";
 
@@ -7,42 +7,51 @@ function scrollToId(id: string) {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+const ROUTE_META: Record<string, string> = {
+    "/": "Venture intelligence",
+    "/validate": "Step 01 · Intake",
+    "/results": "Step 02 · Report",
+};
+
 export default function Navbar() {
     const { path, navigate } = useRouter();
 
     return (
-        <nav className="sticky top-0 z-20 border-b border-border/60 bg-background/85 backdrop-blur-md">
-            <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3.5">
-                <button
-                    type="button"
-                    onClick={() => navigate("/")}
-                    className="flex items-center transition-opacity hover:opacity-90 cursor-pointer"
-                >
-                    <img
-                        src="/logo.png"
-                        alt="FoundrScore"
-                        className="h-11 w-auto filter-[brightness(0)]"
-                    />
-                </button>
+        <nav className="sticky top-0 z-30 border-b border-line bg-ink/75 backdrop-blur-xl">
+            <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 sm:px-8">
+                <div className="flex items-center gap-6">
+                    <button
+                        type="button"
+                        onClick={() => navigate("/")}
+                        className="flex items-center transition-opacity hover:opacity-80 cursor-pointer"
+                    >
+                        <img src="/logo.png" alt="FoundrScore" className="h-9 w-auto sm:h-10" />
+                    </button>
+                    <span className="hidden items-center gap-2 border-l border-line pl-6 label-mono text-ivory/45 md:flex">
+                        <span className="size-1.5 rounded-full bg-cyan" />
+                        {ROUTE_META[path] ?? ROUTE_META["/"]}
+                    </span>
+                </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-4">
                     {path === "/" && (
                         <>
                             <button
                                 type="button"
                                 onClick={() => scrollToId("how-it-works")}
-                                className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:block cursor-pointer"
+                                className="hidden label-mono text-ivory/60 transition-colors hover:text-ivory sm:block cursor-pointer"
                             >
                                 How it works
                             </button>
-                            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                            <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}>
                                 <Button
-                                    variant="gradient"
+                                    variant="ivory"
                                     size="sm"
                                     onClick={() => navigate("/validate")}
-                                    className="cursor-pointer font-semibold shadow-xs"
+                                    className="h-9 gap-1.5 px-4 text-[0.8rem] font-medium cursor-pointer"
                                 >
                                     Validate Idea
+                                    <ArrowUpRight className="size-3.5" />
                                 </Button>
                             </motion.div>
                         </>
@@ -53,7 +62,7 @@ export default function Navbar() {
                             variant="ghost"
                             size="sm"
                             onClick={() => navigate("/")}
-                            className="gap-1.5 text-xs font-mono tracking-wider uppercase text-muted-foreground hover:text-foreground cursor-pointer"
+                            className="h-9 gap-1.5 px-3 label-mono text-ivory/60 hover:bg-ivory/5 hover:text-ivory cursor-pointer"
                         >
                             <ArrowLeft className="size-3.5" />
                             Back to Home
@@ -61,24 +70,24 @@ export default function Navbar() {
                     )}
 
                     {path === "/results" && (
-                        <div className="flex items-center gap-2.5">
+                        <div className="flex items-center gap-2 sm:gap-3">
                             <Button
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => navigate("/")}
-                                className="hidden sm:inline-flex text-xs font-mono tracking-wider uppercase text-muted-foreground hover:text-foreground cursor-pointer"
+                                className="hidden h-9 px-3 label-mono text-ivory/60 hover:bg-ivory/5 hover:text-ivory sm:inline-flex cursor-pointer"
                             >
                                 Home
                             </Button>
-                            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                            <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}>
                                 <Button
-                                    variant="gradient"
+                                    variant="ivory"
                                     size="sm"
                                     onClick={() => navigate("/validate")}
-                                    className="gap-1.5 cursor-pointer font-semibold"
+                                    className="h-9 gap-1.5 px-4 text-[0.8rem] font-medium cursor-pointer"
                                 >
-                                    <Sparkles className="size-3.5" />
                                     Score another idea
+                                    <ArrowUpRight className="size-3.5" />
                                 </Button>
                             </motion.div>
                         </div>

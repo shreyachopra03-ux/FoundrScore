@@ -1,26 +1,26 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
-import GridPaperPanel from "../components/GridPaperPanel";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Button } from "../components/ui/button";
+import Reveal, { RevealStagger } from "../components/Reveal";
 import { useRouter } from "../lib/router";
+import { EASE, revealItemVariants } from "../lib/motion";
 
 const PILLARS = [
   {
     title: "5 Core Dimensions",
     description: "Multi-factor scoring testing demand, differentiation, feasibility, timing, and revenue viability.",
-    tone: "mint" as const,
   },
   {
     title: "Real Competitors",
     description: "Uncovers incumbents and stealth rivals occupying your space so you never build in a vacuum.",
-    tone: "peach" as const,
   },
   {
     title: "Actionable Next Steps",
     description: "Pinpoints high-risk assumptions with sharp pivot suggestions and runway calibration.",
-    tone: "sky" as const,
   },
 ];
+
+const DIMENSIONS = ["Market demand", "Differentiation", "Feasibility", "Timing", "Monetization"];
 
 function scrollToId(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -30,115 +30,145 @@ export default function HomePage() {
   const { navigate } = useRouter();
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="mx-auto flex max-w-4xl flex-col items-center gap-7 px-4 pt-16 pb-20 text-center sm:pt-24 sm:pb-28">
+      <section className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 px-5 pt-12 pb-20 sm:px-8 sm:pt-20 sm:pb-24 lg:grid-cols-12 lg:items-center lg:gap-x-16 lg:pt-24 lg:pb-28">
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="flex flex-col items-center gap-5"
+          transition={{ duration: 0.7, ease: EASE }}
+          className="flex flex-col lg:col-span-7"
         >
-          <span className="rounded-full bg-foreground/10 px-3.5 py-1 font-mono text-xs font-semibold tracking-wider text-foreground/80 uppercase backdrop-blur">
+          <span className="inline-flex items-center gap-3 label-mono text-cyan">
+            <span className="h-px w-8 bg-cyan" />
             AI-powered validation
           </span>
 
-          <h1 className="font-heading text-4xl leading-[1.12] font-bold text-balance text-foreground sm:text-6xl">
-            Know if your startup idea
-            <br />
-            is worth building.
+          <h1 className="display mt-6 max-w-[14ch] text-[clamp(2.5rem,1.5rem+4vw,5.25rem)] leading-[1.02] text-balance text-ivory">
+            Know if your startup idea is <em className="text-cyan">worth building.</em>
           </h1>
 
-          <p className="max-w-lg text-balance text-base sm:text-lg text-foreground/75">
-            Get a blunt, data-informed score before you spend months and money.
-          </p>
+          <div className="mt-8 grid max-w-xl grid-cols-1 gap-5 border-t border-line pt-6 sm:grid-cols-2">
+            <p className="text-base leading-relaxed text-ivory/70 sm:text-lg">
+              Get a blunt, data-informed score before you spend months and money.
+            </p>
+            <p className="label-mono leading-relaxed text-ivory/45">
+              No hype. No fluff. Just a sharper first decision.
+            </p>
+          </div>
 
-          <p className="flex items-center gap-1.5 text-sm font-medium text-foreground/60">
-            <Sparkles className="size-3.5 text-primary" />
-            No hype. No fluff. Just a sharper first decision.
-          </p>
-
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
               <Button
-                variant="gradient"
+                variant="ivory"
                 size="lg"
                 onClick={() => navigate("/validate")}
-                className="gap-2 px-7 py-3 font-semibold text-white shadow-md cursor-pointer text-sm"
+                className="group/cta h-14 gap-3 pr-2 pl-6 text-base font-medium cursor-pointer"
               >
                 Score my idea
-                <ArrowRight className="size-4" />
+                <span className="flex size-10 items-center justify-center rounded-sm bg-ink text-cyan">
+                  <ArrowRight className="size-4 transition-transform duration-300 group-hover/cta:-rotate-45" />
+                </span>
               </Button>
             </motion.div>
 
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => scrollToId("how-it-works")}
-                className="px-7 py-3 font-semibold border-border bg-card text-foreground hover:bg-secondary cursor-pointer text-sm"
-              >
-                How it works
-              </Button>
-            </motion.div>
+            <Button
+              variant="line"
+              size="lg"
+              onClick={() => scrollToId("how-it-works")}
+              className="h-14 px-6 text-base font-medium cursor-pointer"
+            >
+              How it works
+            </Button>
           </div>
         </motion.div>
+
+        {/* Index of what gets measured */}
+        <motion.aside
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
+          className="relative w-full lg:col-span-5 lg:max-w-md lg:justify-self-end"
+        >
+          <div className="relative overflow-hidden rounded-2xl border border-line bg-ink-2/80 p-6 backdrop-blur sm:p-7">
+            <div aria-hidden className="pointer-events-none absolute -top-20 -right-20 h-56 w-56 rounded-full bg-cyan/15 blur-3xl" />
+            <div className="relative flex items-center justify-between">
+              <span className="label-mono text-ivory/50">The instrument</span>
+              <span className="label-mono text-cyan/80">0 — 100</span>
+            </div>
+            <ul className="relative mt-6">
+              {DIMENSIONS.map((d, i) => (
+                <li key={d} className="flex items-baseline gap-4 border-t border-line py-3">
+                  <span className="font-mono text-xs text-ivory/35">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="font-heading text-2xl text-ivory">{d}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </motion.aside>
       </section>
 
       {/* Pillars / How It Works Section */}
-      <section id="how-it-works" className="w-full scroll-mt-24 border-t border-border/60 py-20 px-4">
-        <div className="mx-auto flex max-w-5xl flex-col items-center gap-12">
-          <div className="flex flex-col items-center gap-3 text-center">
-            <span className="font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-              Three-Pillar Evaluation
-            </span>
-            <h2 className="font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              Engineered for cold, objective truth.
-            </h2>
-            <p className="max-w-md text-balance text-sm text-foreground/70">
+      <section id="how-it-works" className="w-full scroll-mt-20 bg-ivory text-ink">
+        <div className="mx-auto w-full max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
+          <Reveal className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-end lg:gap-10">
+            <div className="lg:col-span-7">
+              <span className="label-mono text-ink/55">Three-Pillar Evaluation</span>
+              <h2 className="display mt-4 text-5xl text-ink sm:text-7xl">
+                Engineered for cold, <em>objective truth.</em>
+              </h2>
+            </div>
+            <p className="max-w-sm text-base leading-relaxed text-ink/65 lg:col-span-5 lg:justify-self-end">
               We score your concept through the eyes of an exacting early-stage venture partner.
             </p>
-          </div>
+          </Reveal>
 
-          <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-3">
+          <RevealStagger className="mt-14 grid grid-cols-1 border-t border-ink/15 md:grid-cols-3" staggerDelay={0.1}>
             {PILLARS.map((pillar, index) => (
-              <motion.div
+              <motion.button
                 key={pillar.title}
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.45, delay: index * 0.1 }}
-                className="h-full"
-              >
-                <GridPaperPanel
-                  size="block"
-                  tone={pillar.tone}
-                  title={pillar.title}
-                  description={pillar.description}
-                  onAction={() => navigate("/validate")}
-                  className="h-full"
-                />
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="mt-4 flex flex-col items-center gap-4 text-center">
-            <p className="font-mono text-xs tracking-wider text-muted-foreground uppercase">
-              Ready to stress-test your concept?
-            </p>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button
-                variant="gradient"
-                size="lg"
+                type="button"
+                variants={revealItemVariants}
                 onClick={() => navigate("/validate")}
-                className="gap-2 px-8 py-3 font-semibold cursor-pointer shadow-md"
+                className="group flex flex-col gap-6 border-b border-ink/15 py-10 text-left md:border-b-0 md:px-8 md:first:pl-0 md:last:pr-0 md:not-first:border-l cursor-pointer"
               >
-                Validate your idea now
-                <ArrowRight className="size-4" />
-              </Button>
-            </motion.div>
-          </div>
+                <div className="flex items-start justify-between">
+                  <span className="display text-7xl text-ink/15 transition-colors duration-500 group-hover:text-ember">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <ArrowUpRight className="size-6 text-ink/30 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-ink" />
+                </div>
+                <h3 className="font-heading text-4xl leading-tight text-ink">{pillar.title}</h3>
+                <p className="text-sm leading-relaxed text-ink/65">{pillar.description}</p>
+              </motion.button>
+            ))}
+          </RevealStagger>
         </div>
+      </section>
+
+      {/* Closing CTA band */}
+      <section className="w-full bg-amber text-ink">
+        <Reveal className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-5 py-16 sm:px-8 sm:py-20 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="label-mono text-ink/60">Ready to stress-test your concept?</p>
+            <h2 className="display mt-4 max-w-2xl text-5xl text-ink sm:text-7xl">
+              One idea. One <em>honest</em> number.
+            </h2>
+          </div>
+          <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className="shrink-0">
+            <Button
+              variant="ink"
+              size="lg"
+              onClick={() => navigate("/validate")}
+              className="group/cta h-14 gap-3 pr-2 pl-6 text-base font-medium cursor-pointer"
+            >
+              Validate your idea now
+              <span className="flex size-10 items-center justify-center rounded-sm bg-amber text-ink">
+                <ArrowRight className="size-4 transition-transform duration-300 group-hover/cta:-rotate-45" />
+              </span>
+            </Button>
+          </motion.div>
+        </Reveal>
       </section>
     </div>
   );
