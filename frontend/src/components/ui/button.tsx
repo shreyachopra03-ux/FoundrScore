@@ -19,6 +19,12 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         gradient:
           "border-transparent bg-linear-to-b from-[oklch(0.64_0.19_40)] to-[oklch(0.56_0.19_35)] text-white shadow-lg shadow-[oklch(0.56_0.19_35/35%)] transition-transform hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[oklch(0.56_0.19_35/45%)] active:translate-y-0",
+        ivory:
+          "rounded-md bg-ivory text-ink hover:bg-cyan transition-colors duration-300",
+        ink:
+          "rounded-md bg-ink text-ivory hover:bg-ink-3 transition-colors duration-300",
+        line:
+          "rounded-md border-line bg-transparent text-ivory hover:border-ivory/40 hover:bg-ivory/5 transition-colors duration-300",
       },
       size: {
         default:
